@@ -65,6 +65,32 @@ def log(msg):
     print(f"[{datetime.now().strftime('%H:%M:%S')}] {msg}", flush=True)
 
 
+def generate_with_retry(attempts=4, **kwargs):
+    """Call the Gemini API, retrying transient network/server errors with backoff."""
+    for i in range(attempts):
+        try:
+            return client.models.generate_content(**kwargs)
+        except Exception as ex:
+            if i == attempts - 1:
+                raise
+            wait = 20 * (i + 1)
+            log(f"API call failed ({type(ex).__name__}: {ex}); retry {i + 1}/{attempts - 1} in {wait}s")
+            time.sleep(wait)
+
+
+def json_call(what, attempts=3, **kwargs):
+    """Gemini call that must return valid JSON; regenerates if output is malformed/truncated."""
+    for i in range(attempts):
+        resp = generate_with_retry(**kwargs)
+        try:
+            return json.loads(resp.text)
+        except Exception as ex:
+            log(f"Bad JSON from model for {what} (attempt {i + 1}/{attempts}): {ex}")
+            if i == attempts - 1:
+                raise
+            time.sleep(10)
+
+
 # ---------------- 1. Fetch headlines ----------------
 def fetch_headlines():
     items = []
@@ -108,12 +134,12 @@ Pick 9-12 stories total, ordered by importance.
 
 HEADLINES:
 {json.dumps(items, indent=1)}"""
-    resp = client.models.generate_content(
+    data = json_call(
+        "story selection",
         model=TEXT_MODEL,
         contents=prompt,
         config=types.GenerateContentConfig(response_mime_type="application/json"),
     )
-    data = json.loads(resp.text)
     log(f"Selected {len(data['stories'])} stories: {data['episode_title']}")
     return data
 
@@ -218,29 +244,29 @@ Return JSON: {{"turns": [{{"speaker": "{HOST_A}"|"{HOST_B}", "text": str}}]}}
 
 STORIES AND MATERIAL:
 {material}"""
-    resp = client.models.generate_content(
+    turns = json_call(
+        "podcast script",
         model=TEXT_MODEL,
         contents=prompt,
         config=types.GenerateContentConfig(
             response_mime_type="application/json",
-            max_output_tokens=32768,
+            max_output_tokens=65536,
             temperature=0.8,
         ),
-    )
-    turns = json.loads(resp.text)["turns"]
+    )["turns"]
     words = sum(len(t["text"].split()) for t in turns)
     log(f"Script: {len(turns)} turns, {words} words (~{words // 150} min)")
     # One retry if badly short
     if words < WORDS_TARGET * 0.7:
         log("Script too short; expanding...")
-        resp = client.models.generate_content(
+        turns = json_call(
+            "podcast script (rewrite)",
             model=TEXT_MODEL,
             contents=prompt + f"\n\nYour previous draft was only {words} words. "
             f"Write it again at the full {WORDS_TARGET} words - go deeper on every story.",
             config=types.GenerateContentConfig(
-                response_mime_type="application/json", max_output_tokens=32768, temperature=0.8),
-        )
-        turns = json.loads(resp.text)["turns"]
+                response_mime_type="application/json", max_output_tokens=65536, temperature=0.8),
+        )["turns"]
         words = sum(len(t["text"].split()) for t in turns)
         log(f"Rewrite: {len(turns)} turns, {words} words")
     return turns
@@ -249,7 +275,7 @@ STORIES AND MATERIAL:
 # ---------------- 5. TTS ----------------
 def tts_chunk(dialogue_text, attempt=0):
     try:
-        resp = client.models.generate_content(
+        resp = generate_with_retry(
             model=TTS_MODEL,
             contents=f"TTS the following podcast conversation between {HOST_A} and {HOST_B}. "
                      f"Energetic but natural morning-radio delivery:\n\n{dialogue_text}",
