@@ -2,7 +2,8 @@ name: Daily episode
 
 on:
   schedule:
-   - cron: "15 11 * * *"
+    # 11:15 UTC = 4:15am PDT (summer) / 3:15am PST (winter) - always done before 5am Pacific
+    - cron: "15 11 * * *"
   workflow_dispatch: {}
 
 permissions:
@@ -30,34 +31,32 @@ jobs:
           WSJ_COOKIES_TXT: ${{ secrets.WSJ_COOKIES_TXT }}
           TARGET_MINUTES: "30"
           SHOW_NAME: "Morning Market Brief"
+          VOICE_A: "Algenib"
+          VOICE_B: "Charon"
         run: python src/generate_episode.py
 
-      - name: Publish release with MP3
-        env:
-          GH_TOKEN: ${{ github.token }}
+      - name: Fetch current site (previous episodes)
         run: |
-          TAG=$(python -c "import json;print(json.load(open('out/meta.json'))['tag'])")
-          TITLE=$(python -c "import json;print(json.load(open('out/meta.json'))['title'])")
-          gh release delete "$TAG" --yes 2>/dev/null || true
-          gh release create "$TAG" out/episode.mp3 --title "$TITLE" --notes "Auto-generated episode"
+          git fetch origin gh-pages --depth=1 || true
+          if git rev-parse --verify FETCH_HEAD >/dev/null 2>&1; then
+            git worktree add site FETCH_HEAD
+          else
+            mkdir -p site
+          fi
 
-      - name: Update podcast feed
+      - name: Build feed and copy episode
         env:
           SHOW_NAME: "Morning Market Brief"
         run: python src/make_feed.py
 
-      - name: Prune old releases
-        env:
-          GH_TOKEN: ${{ github.token }}
+      - name: Publish to gh-pages
         run: |
-          while read -r tag; do
-            [ -n "$tag" ] && gh release delete "$tag" --yes --cleanup-tag || true
-          done < out/prune_tags.txt
-
-      - name: Commit feed
-        run: |
+          cd site
+          rm -rf .git
+          git init -q -b gh-pages
           git config user.name "podcast-bot"
           git config user.email "actions@github.com"
-          git add docs/
-          git commit -m "Episode $(date +%F)" || echo "nothing to commit"
-          git push
+          touch .nojekyll
+          git add -A
+          git commit -q -m "Publish $(date +%F)"
+          git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" gh-pages
