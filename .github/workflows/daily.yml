@@ -1,0 +1,63 @@
+name: Daily episode
+
+on:
+  schedule:
+    - cron: "15 8 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+          pip install -q -r requirements.txt
+
+      - name: Generate episode
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          WSJ_COOKIES_TXT: ${{ secrets.WSJ_COOKIES_TXT }}
+          TARGET_MINUTES: "30"
+          SHOW_NAME: "Morning Market Brief"
+        run: python src/generate_episode.py
+
+      - name: Publish release with MP3
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG=$(python -c "import json;print(json.load(open('out/meta.json'))['tag'])")
+          TITLE=$(python -c "import json;print(json.load(open('out/meta.json'))['title'])")
+          gh release delete "$TAG" --yes 2>/dev/null || true
+          gh release create "$TAG" out/episode.mp3 --title "$TITLE" --notes "Auto-generated episode"
+
+      - name: Update podcast feed
+        env:
+          SHOW_NAME: "Morning Market Brief"
+        run: python src/make_feed.py
+
+      - name: Prune old releases
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          while read -r tag; do
+            [ -n "$tag" ] && gh release delete "$tag" --yes --cleanup-tag || true
+          done < out/prune_tags.txt
+
+      - name: Commit feed
+        run: |
+          git config user.name "podcast-bot"
+          git config user.email "actions@github.com"
+          git add docs/
+          git commit -m "Episode $(date +%F)" || echo "nothing to commit"
+          git push
