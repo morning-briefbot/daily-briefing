@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd">
+<channel>
+  <title>Morning Market Brief</title>
+  <link>https://morning-briefbot.github.io/daily-briefing</link>
+  <language>en-us</language>
+  <description>Your daily AI-generated business news rundown, ready by 5am.</description>
+  <itunes:author>morning-briefbot</itunes:author>
+  <itunes:explicit>false</itunes:explicit>
+  <item>
+    <title>Jul 08: Mideast Strikes Shake Oil Markets, Chip Stocks Retreat on Samsung Earnings, and the $14,000 Doorless EV</title>
+    <description>US Strikes in Iran Trigger Oil Price Surge and Revoked Energy Waivers • Samsung Earnings Spark Broader Sell-Off in Chip Sector • SpaceX Slips on Nasdaq-100 Debut Amid Tesla Merger Speculation • Amazon Launches Giant $25 Billion Bond Sale to Fund AI Infrastructure • Major U.S. Banks Explore Deal to Shake Up Payment Card Networks • Vertex Pharmaceuticals to Acquire Crinetics for $10 Billion • Rivian Shares Crash 18% Following Large Capital Raise • White House Targets Grocers on Meat Prices as Walmart Cuts Food Costs • Anthropic Inks Massive $19 Billion Infrastructure Lease With TeraWulf • Stellantis Imports Tiny, Doorless $14,000 Fiat Topolino EV to the U.S. • Why Smucker's $5 Billion Bet on Hostess Twinkies Flopped</description>
+    <pubDate>Wed, 08 Jul 2026 04:58:09 +0000</pubDate>
+    <guid isPermaLink="false">ep-2026-07-08</guid>
+    <enclosure url="https://github.com/morning-briefbot/daily-briefing/releases/download/ep-2026-07-08/episode.mp3" length="15422445" type="audio/mpeg"/>
+    <itunes:duration>1285</itunes:duration>
+  </item>
+</channel>
+</rss>
