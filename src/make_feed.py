@@ -1,35 +1,44 @@
 #!/usr/bin/env python3
-"""Update docs/episodes.json and docs/feed.xml after a release is published.
+"""Build the podcast site (feed.xml + episodes/) for GitHub Pages.
 
-Enclosure URLs use the deterministic GitHub release-asset pattern:
-https://github.com/OWNER/REPO/releases/download/TAG/episode.mp3
+Runs after generate_episode.py. Expects:
+  out/episode.mp3, out/meta.json  - today's episode
+  site/                           - previous site contents (may be empty on first run)
+Updates in site/: episodes/<tag>.mp3, episodes.json, feed.xml
 """
 import json
 import os
+import shutil
 from pathlib import Path
 from xml.sax.saxutils import escape
 
-REPO = os.environ["GITHUB_REPOSITORY"]  # e.g. mike/wsj-daily-brief
-OWNER = REPO.split("/")[0]
+REPO = os.environ["GITHUB_REPOSITORY"]  # e.g. morning-briefbot/daily-briefing
+OWNER, NAME = REPO.split("/")
 SHOW_NAME = os.getenv("SHOW_NAME", "Morning Market Brief")
-KEEP = int(os.getenv("KEEP_EPISODES", "30"))
-PAGES_URL = f"https://{OWNER}.github.io/{REPO.split('/')[1]}"
+KEEP = int(os.getenv("KEEP_EPISODES", "14"))
+PAGES_URL = f"https://{OWNER}.github.io/{NAME}"
 
-DOCS = Path("docs")
-DOCS.mkdir(exist_ok=True)
-EP_FILE = DOCS / "episodes.json"
+SITE = Path(os.getenv("SITE_DIR", "site"))
+EPS = SITE / "episodes"
+EPS.mkdir(parents=True, exist_ok=True)
 
 meta = json.loads(Path("out/meta.json").read_text())
-episodes = json.loads(EP_FILE.read_text()) if EP_FILE.exists() else []
+shutil.copyfile("out/episode.mp3", EPS / f"{meta['tag']}.mp3")
+
+ep_index = SITE / "episodes.json"
+episodes = json.loads(ep_index.read_text()) if ep_index.exists() else []
 episodes = [e for e in episodes if e["tag"] != meta["tag"]]
 episodes.insert(0, meta)
-pruned_tags = [e["tag"] for e in episodes[KEEP:]]
-episodes = episodes[:KEEP]
-EP_FILE.write_text(json.dumps(episodes, indent=2))
+
+# Prune old episode files beyond KEEP, and entries whose file is missing
+for e in episodes[KEEP:]:
+    (EPS / f"{e['tag']}.mp3").unlink(missing_ok=True)
+episodes = [e for e in episodes[:KEEP] if (EPS / f"{e['tag']}.mp3").exists()]
+ep_index.write_text(json.dumps(episodes, indent=2))
 
 items = ""
 for e in episodes:
-    url = f"https://github.com/{REPO}/releases/download/{e['tag']}/episode.mp3"
+    url = f"{PAGES_URL}/episodes/{e['tag']}.mp3"
     items += f"""
   <item>
     <title>{escape(e['title'])}</title>
@@ -52,8 +61,5 @@ feed = f"""<?xml version="1.0" encoding="UTF-8"?>
 </channel>
 </rss>
 """
-(DOCS / "feed.xml").write_text(feed)
+(SITE / "feed.xml").write_text(feed)
 print(f"Feed updated: {len(episodes)} episodes -> {PAGES_URL}/feed.xml")
-
-# Tags older than KEEP -> the workflow deletes these releases
-Path("out/prune_tags.txt").write_text("\n".join(pruned_tags))
