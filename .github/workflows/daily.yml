@@ -2,8 +2,10 @@ name: Daily episode
 
 on:
   schedule:
-    # 11:15 UTC = 4:15am PDT (summer) / 3:15am PST (winter) - always done before 5am Pacific
+    # Primary: 11:15 UTC = 4:15am PDT / 3:15am PST
     - cron: "15 11 * * *"
+    # Backup: 12:00 UTC = 5:00am PDT / 4:00am PST (skips itself if primary succeeded)
+    - cron: "0 12 * * *"
   workflow_dispatch: {}
 
 permissions:
@@ -16,16 +18,31 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Skip if today's episode already published (scheduled runs only)
+        id: guard
+        run: |
+          TODAY=$(date -u +%F)
+          if [ "${{ github.event_name }}" = "schedule" ] && \
+             curl -fsSL "https://raw.githubusercontent.com/${{ github.repository }}/gh-pages/episodes.json" | grep -q "ep-$TODAY"; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            echo "Episode for $TODAY already published - nothing to do."
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - uses: actions/setup-python@v5
+        if: steps.guard.outputs.skip != 'true'
         with:
           python-version: "3.12"
 
       - name: Install dependencies
+        if: steps.guard.outputs.skip != 'true'
         run: |
           sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
           pip install -q -r requirements.txt
 
       - name: Generate episode
+        if: steps.guard.outputs.skip != 'true'
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           WSJ_COOKIES_TXT: ${{ secrets.WSJ_COOKIES_TXT }}
@@ -36,6 +53,7 @@ jobs:
         run: python src/generate_episode.py
 
       - name: Fetch current site (previous episodes)
+        if: steps.guard.outputs.skip != 'true'
         run: |
           git fetch origin gh-pages --depth=1 || true
           if git rev-parse --verify FETCH_HEAD >/dev/null 2>&1; then
@@ -45,11 +63,13 @@ jobs:
           fi
 
       - name: Build feed and copy episode
+        if: steps.guard.outputs.skip != 'true'
         env:
           SHOW_NAME: "Morning Market Brief"
         run: python src/make_feed.py
 
       - name: Publish to gh-pages
+        if: steps.guard.outputs.skip != 'true'
         run: |
           cd site
           rm -rf .git
