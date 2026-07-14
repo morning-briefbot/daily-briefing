@@ -16,6 +16,9 @@ import tempfile
 import time
 import wave
 from datetime import datetime, timezone
+from zoneinfo import ZoneInfo
+
+LOCAL_TZ = ZoneInfo(os.getenv("SHOW_TIMEZONE", "America/Los_Angeles"))
 from http.cookiejar import MozillaCookieJar
 from pathlib import Path
 from urllib.parse import quote_plus
@@ -133,7 +136,7 @@ def fetch_headlines():
 # ---------------- 2. Select stories ----------------
 def select_stories(items):
     prompt = f"""You are the editor of a daily morning business podcast (like Morning Brew),
-recorded at ~4am US Eastern on {datetime.now(timezone.utc).strftime('%A, %B %d, %Y')}.
+recorded in the early morning of {datetime.now(LOCAL_TZ).strftime('%A, %B %d, %Y')} US Pacific time.
 Below are raw headlines from WSJ and other outlets from the last ~24h.
 
 Pick the stories for today's episode. Merge duplicate coverage of the same story into one.
@@ -237,7 +240,7 @@ def enrich(stories, wsj):
 
 # ---------------- 4. Write the two-host script ----------------
 def write_script(episode):
-    today = datetime.now(timezone.utc).strftime("%A, %B %d, %Y")
+    today = datetime.now(LOCAL_TZ).strftime("%A, %B %d, %Y")
     material = "\n\n=====\n\n".join(
         f"STORY {i+1} [{s['segment']}]: {s['headline']}\nWhy it matters: {s['why_it_matters']}\nMATERIAL:\n{s['material'][:8000]}"
         for i, s in enumerate(episode["stories"])
@@ -365,7 +368,8 @@ def main():
     turns = write_script(episode)
     mp3, duration = synthesize(turns)
 
-    today = datetime.now(timezone.utc)
+    now_utc = datetime.now(timezone.utc)
+    today = now_utc.astimezone(LOCAL_TZ)  # episode day rolls over at midnight Pacific
     meta = {
         "date": today.strftime("%Y-%m-%d"),
         "tag": f"ep-{today.strftime('%Y-%m-%d')}",
@@ -373,7 +377,7 @@ def main():
         "description": " • ".join(s["headline"] for s in episode["stories"]),
         "duration_seconds": duration,
         "size_bytes": mp3.stat().st_size,
-        "pub_date": today.strftime("%a, %d %b %Y %H:%M:%S +0000"),
+        "pub_date": now_utc.strftime("%a, %d %b %Y %H:%M:%S +0000"),
     }
     (OUT_DIR / "meta.json").write_text(json.dumps(meta, indent=2))
     (OUT_DIR / "script.json").write_text(json.dumps(turns, indent=2))
