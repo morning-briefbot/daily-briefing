@@ -23,7 +23,7 @@ jobs:
       - name: Skip if today's episode already published (scheduled runs only)
         id: guard
         run: |
-          TODAY=$(date -u +%F)
+          TODAY=$(TZ=America/Los_Angeles date +%F)
           if [ "${{ github.event_name }}" = "schedule" ] && \
              curl -fsSL "https://raw.githubusercontent.com/${{ github.repository }}/gh-pages/episodes.json" | grep -q "ep-$TODAY"; then
             echo "skip=true" >> "$GITHUB_OUTPUT"
