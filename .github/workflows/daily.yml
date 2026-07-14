@@ -2,10 +2,12 @@ name: Daily episode
 
 on:
   schedule:
-    # Primary: 11:15 UTC = 4:15am PDT / 3:15am PST
-    - cron: "15 11 * * *"
-    # Backup: 12:00 UTC = 5:00am PDT / 4:00am PST (skips itself if primary succeeded)
-    - cron: "0 12 * * *"
+    # Three staggered attempts to beat GitHub's cron delays (guard step ensures
+    # only the first successful one builds the episode; the rest cost nothing).
+    # 07:45 UTC = 12:45am PDT | 09:00 UTC = 2:00am PDT | 10:15 UTC = 3:15am PDT
+    - cron: "45 7 * * *"
+    - cron: "0 9 * * *"
+    - cron: "15 10 * * *"
   workflow_dispatch: {}
 
 permissions:
