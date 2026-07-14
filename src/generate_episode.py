@@ -37,6 +37,11 @@ VOICE_A = os.getenv("VOICE_A", "Puck")   # see ai.google.dev/gemini-api/docs/spe
 VOICE_B = os.getenv("VOICE_B", "Kore")
 SHOW_NAME = os.getenv("SHOW_NAME", "Morning Market Brief")
 WSJ_COOKIES_TXT = os.getenv("WSJ_COOKIES_TXT", "")  # optional, Netscape cookies.txt format
+TTS_STYLE = os.getenv(
+    "TTS_STYLE",
+    f"{HOST_A} delivers like a newscaster at a natural pace; "
+    f"{HOST_B} is empathetic and rapid-fire. Overall: energetic but natural morning-radio delivery.",
+)
 
 OUT_DIR = Path("out")
 WORDS_TARGET = TARGET_MINUTES * 150  # ~150 spoken words/minute
@@ -290,7 +295,7 @@ def tts_chunk(dialogue_text, attempt=0):
         resp = generate_with_retry(
             model=TTS_MODEL,
             contents=f"TTS the following podcast conversation between {HOST_A} and {HOST_B}. "
-                     f"Energetic but natural morning-radio delivery:\n\n{dialogue_text}",
+                     f"{TTS_STYLE}\n\n{dialogue_text}",
             config=types.GenerateContentConfig(
                 response_modalities=["AUDIO"],
                 speech_config=types.SpeechConfig(
