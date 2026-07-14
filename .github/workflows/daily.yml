@@ -51,7 +51,7 @@ jobs:
           TARGET_MINUTES: "30"
           SHOW_NAME: "Morning Market Brief"
           VOICE_A: "Algenib"
-          VOICE_B: "Charon"
+          VOICE_B: "Iapetus"
         run: python src/generate_episode.py
 
       - name: Fetch current site (previous episodes)
