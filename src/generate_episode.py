@@ -65,17 +65,29 @@ def log(msg):
     print(f"[{datetime.now().strftime('%H:%M:%S')}] {msg}", flush=True)
 
 
-def generate_with_retry(attempts=4, **kwargs):
-    """Call the Gemini API, retrying transient network/server errors with backoff."""
-    for i in range(attempts):
-        try:
-            return client.models.generate_content(**kwargs)
-        except Exception as ex:
-            if i == attempts - 1:
-                raise
-            wait = 20 * (i + 1)
-            log(f"API call failed ({type(ex).__name__}: {ex}); retry {i + 1}/{attempts - 1} in {wait}s")
-            time.sleep(wait)
+# If a model stays overloaded (503) through all retries, try these instead.
+FALLBACK_MODELS = {
+    TEXT_MODEL: [m for m in os.getenv("TEXT_FALLBACKS", "gemini-flash-lite-latest").split(",") if m],
+    TTS_MODEL: [m for m in os.getenv("TTS_FALLBACKS", "gemini-2.5-flash-preview-tts").split(",") if m],
+}
+
+
+def generate_with_retry(attempts=3, **kwargs):
+    """Call the Gemini API, retrying transient errors; fall back to alternate models if one stays down."""
+    primary = kwargs.pop("model")
+    chain = [primary] + FALLBACK_MODELS.get(primary, [])
+    last_ex = None
+    for model in chain:
+        for i in range(attempts):
+            try:
+                return client.models.generate_content(model=model, **kwargs)
+            except Exception as ex:
+                last_ex = ex
+                wait = 20 * (i + 1)
+                log(f"{model} failed ({type(ex).__name__}: {ex}); attempt {i + 1}/{attempts}, waiting {wait}s")
+                time.sleep(wait)
+        log(f"Model {model} unavailable after {attempts} attempts; trying next fallback...")
+    raise last_ex
 
 
 def json_call(what, attempts=3, **kwargs):
