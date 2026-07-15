@@ -34,6 +34,8 @@ GEMINI_API_KEY = os.environ["GEMINI_API_KEY"]
 TEXT_MODEL = os.getenv("GEMINI_TEXT_MODEL", "gemini-flash-latest")
 TTS_MODEL = os.getenv("GEMINI_TTS_MODEL", "gemini-3.1-flash-tts-preview")
 TARGET_MINUTES = int(os.getenv("TARGET_MINUTES", "30"))
+STUDY_MINUTES = int(os.getenv("STUDY_MINUTES", "10"))  # 0 disables the study segment
+NOTES_DIR = Path(os.getenv("NOTES_DIR", "notes"))
 HOST_A = os.getenv("HOST_A_NAME", "Alex")
 HOST_B = os.getenv("HOST_B_NAME", "Sam")
 VOICE_A = os.getenv("VOICE_A", "Puck")   # see ai.google.dev/gemini-api/docs/speech-generation
@@ -292,6 +294,75 @@ STORIES AND MATERIAL:
     return turns
 
 
+# ---------------- 4b. MBA study segment ----------------
+def load_study_notes():
+    """Read every file in notes/ (txt, md, pdf, docx). Returns '' if none."""
+    if not NOTES_DIR.exists():
+        return ""
+    texts = []
+    for p in sorted(NOTES_DIR.rglob("*")):
+        if not p.is_file():
+            continue
+        suffix = p.suffix.lower()
+        try:
+            if suffix in (".txt", ".md"):
+                texts.append(f"### {p.name}\n{p.read_text(errors='ignore')}")
+            elif suffix == ".pdf":
+                from pypdf import PdfReader
+                pages = "\n".join((pg.extract_text() or "") for pg in PdfReader(str(p)).pages)
+                texts.append(f"### {p.name}\n{pages}")
+            elif suffix == ".docx":
+                import docx
+                paras = "\n".join(par.text for par in docx.Document(str(p)).paragraphs)
+                texts.append(f"### {p.name}\n{paras}")
+        except Exception as ex:
+            log(f"WARN could not read {p.name}: {ex}")
+    combined = "\n\n".join(texts).strip()
+    log(f"Study notes: {len(texts)} file(s), {len(combined)} chars")
+    return combined[:80000]
+
+
+def write_study_segment(notes_text):
+    today = datetime.now(LOCAL_TZ)
+    words = STUDY_MINUTES * 150
+    prompt = f"""You write the closing segment of "{SHOW_NAME}". After the news, the two hosts
+({HOST_A} and {HOST_B}) run a study segment for one listener, Mike, who is in an Executive MBA
+program. The segment is built ONLY from his course notes below. Today is {today.strftime('%A')}.
+
+GOALS (spaced repetition for a busy commuter):
+1. 60-second recap of the big themes across all notes.
+2. One DEEP DIVE topic - rotate through the material by weekday so different days
+   emphasize different topics ({today.strftime('%A')} should pick topic #{today.toordinal() % 7 + 1}
+   counting through the distinct topics found in the notes, wrapping around).
+3. ACTIVE RECALL: {HOST_B} asks {HOST_A} three exam-style questions on the material.
+   {HOST_A} pauses conversationally ("think about it for a second..."), then answers and explains.
+4. Close with one practical takeaway Mike can apply at work today.
+
+RULES:
+- TOTAL LENGTH: {words} words (+/-15%).
+- Open with a natural transition from a business-news show into "Mike's MBA minutes".
+- Same natural dialogue style: handoffs, reactions, no monologues over 100 words.
+- Facts only from the notes. If notes are thin on a topic, say what to review rather than inventing.
+- Spoken words only; spell out numbers.
+
+Return JSON: {{"turns": [{{"speaker": "{HOST_A}"|"{HOST_B}", "text": str}}]}}
+
+COURSE NOTES:
+{notes_text}"""
+    turns = json_call(
+        "study segment",
+        model=TEXT_MODEL,
+        contents=prompt,
+        config=types.GenerateContentConfig(
+            response_mime_type="application/json",
+            max_output_tokens=32768,
+            temperature=0.7,
+        ),
+    )["turns"]
+    log(f"Study segment: {len(turns)} turns, {sum(len(t['text'].split()) for t in turns)} words")
+    return turns
+
+
 # ---------------- 5. TTS ----------------
 def tts_chunk(dialogue_text, attempt=0):
     try:
@@ -366,6 +437,10 @@ def main():
     wsj = wsj_session()
     episode["stories"] = enrich(episode["stories"], wsj)
     turns = write_script(episode)
+    if STUDY_MINUTES > 0:
+        notes = load_study_notes()
+        if notes:
+            turns += write_study_segment(notes)
     mp3, duration = synthesize(turns)
 
     now_utc = datetime.now(timezone.utc)
