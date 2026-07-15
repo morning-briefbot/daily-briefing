@@ -295,31 +295,59 @@ STORIES AND MATERIAL:
 
 
 # ---------------- 4b. MBA study segment ----------------
+def _read_note_file(p):
+    suffix = p.suffix.lower()
+    if suffix in (".txt", ".md"):
+        return p.read_text(errors="ignore")
+    if suffix == ".pdf":
+        from pypdf import PdfReader
+        return "\n".join((pg.extract_text() or "") for pg in PdfReader(str(p)).pages)
+    if suffix == ".docx":
+        import docx
+        return "\n".join(par.text for par in docx.Document(str(p)).paragraphs)
+    return ""
+
+
 def load_study_notes():
-    """Read every file in notes/ (txt, md, pdf, docx). Returns '' if none."""
+    """Read notes/ organized as dated subfolders (e.g. notes/2026-07-13/).
+
+    The newest-named subfolder is labeled CURRENT WEEK; everything else is
+    EARLIER MATERIAL, so the segment can emphasize new content while keeping
+    older topics in rotation. Loose files directly in notes/ count as current.
+    Returns '' if there are no notes.
+    """
     if not NOTES_DIR.exists():
         return ""
-    texts = []
-    for p in sorted(NOTES_DIR.rglob("*")):
-        if not p.is_file():
-            continue
-        suffix = p.suffix.lower()
-        try:
-            if suffix in (".txt", ".md"):
-                texts.append(f"### {p.name}\n{p.read_text(errors='ignore')}")
-            elif suffix == ".pdf":
-                from pypdf import PdfReader
-                pages = "\n".join((pg.extract_text() or "") for pg in PdfReader(str(p)).pages)
-                texts.append(f"### {p.name}\n{pages}")
-            elif suffix == ".docx":
-                import docx
-                paras = "\n".join(par.text for par in docx.Document(str(p)).paragraphs)
-                texts.append(f"### {p.name}\n{paras}")
-        except Exception as ex:
-            log(f"WARN could not read {p.name}: {ex}")
-    combined = "\n\n".join(texts).strip()
-    log(f"Study notes: {len(texts)} file(s), {len(combined)} chars")
-    return combined[:80000]
+    subdirs = sorted([d for d in NOTES_DIR.iterdir() if d.is_dir()], reverse=True)
+    loose = [p for p in NOTES_DIR.iterdir()
+             if p.is_file() and p.suffix.lower() in (".txt", ".md", ".pdf", ".docx")
+             and p.name.lower() != "readme.txt"]
+
+    def read_group(files):
+        out = []
+        for p in sorted(files):
+            try:
+                text = _read_note_file(p).strip()
+                if text:
+                    out.append(f"### {p.name}\n{text}")
+            except Exception as ex:
+                log(f"WARN could not read {p.name}: {ex}")
+        return "\n\n".join(out)
+
+    current_files = loose + (list(subdirs[0].rglob("*")) if subdirs else [])
+    current = read_group([p for p in current_files if p.is_file()])
+    earlier = "\n\n".join(
+        f"--- from {d.name} ---\n{read_group([p for p in d.rglob('*') if p.is_file()])}"
+        for d in subdirs[1:]
+    )
+    parts = []
+    if current:
+        parts.append(f"=== CURRENT WEEK ===\n{current[:45000]}")
+    if earlier:
+        parts.append(f"=== EARLIER MATERIAL (for review rotation) ===\n{earlier[:35000]}")
+    combined = "\n\n".join(parts).strip()
+    log(f"Study notes: {len(subdirs)} week folder(s), {len(combined)} chars")
+    return combined
 
 
 def write_study_segment(notes_text):
@@ -330,11 +358,12 @@ def write_study_segment(notes_text):
 program. The segment is built ONLY from his course notes below. Today is {today.strftime('%A')}.
 
 GOALS (spaced repetition for a busy commuter):
-1. 60-second recap of the big themes across all notes.
-2. One DEEP DIVE topic - rotate through the material by weekday so different days
+1. 60-second recap of the big themes, weighted toward the CURRENT WEEK material.
+2. One DEEP DIVE topic from the CURRENT WEEK - rotate by weekday so different days
    emphasize different topics ({today.strftime('%A')} should pick topic #{today.toordinal() % 7 + 1}
-   counting through the distinct topics found in the notes, wrapping around).
-3. ACTIVE RECALL: {HOST_B} asks {HOST_A} three exam-style questions on the material.
+   counting through the distinct current-week topics, wrapping around).
+3. ACTIVE RECALL: {HOST_B} asks {HOST_A} three exam-style questions - two on current
+   week material, one that reaches back into EARLIER MATERIAL (interleaved review).
    {HOST_A} pauses conversationally ("think about it for a second..."), then answers and explains.
 4. Close with one practical takeaway Mike can apply at work today.
 
