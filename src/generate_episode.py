@@ -318,7 +318,10 @@ def load_study_notes():
     """
     if not NOTES_DIR.exists():
         return ""
-    subdirs = sorted([d for d in NOTES_DIR.iterdir() if d.is_dir()], reverse=True)
+    subdirs = sorted(
+        [d for d in NOTES_DIR.iterdir() if d.is_dir() and d.name.lower() != "archive"],
+        reverse=True,
+    )
     loose = [p for p in NOTES_DIR.iterdir()
              if p.is_file() and p.suffix.lower() in (".txt", ".md", ".pdf", ".docx")
              and p.name.lower() != "readme.txt"]
