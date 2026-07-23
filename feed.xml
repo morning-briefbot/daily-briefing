@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd">
+<channel>
+  <title>Morning Market Brief</title>
+  <link>https://morning-briefbot.github.io/daily-briefing</link>
+  <language>en-us</language>
+  <description>Your daily AI-generated business news rundown, ready by 5am.</description>
+  <itunes:author>morning-briefbot</itunes:author>
+  <itunes:explicit>false</itunes:explicit>
+  <item>
+    <title>Jul 23: Oil Tops $100 as Middle East Escalates, Big Tech Capex Sparks Sell-Off, and Yields Surge</title>
+    <description>Oil Nears $100 as Red Sea Attacks and Escalating Conflict Threaten Energy Supplies • Global Bond Yields Spike to Multi-Year Highs Following Oil Rally and Drop in Jobless Claims • Alphabet and Tesla Drag Tech Sector Down Over Massive AI Capital Expenditures • Lockheed Martin Leads Defense Stock Rally After Boosting Full-Year Outlook • Airlines Slash Profit Guidance as Jet Fuel Costs Surge • Paramount Wins EU Approval for $81 Billion Warner Bros. Discovery Merger • Wall Street Firms Pay Premium for High-Speed Feeds of Trump's Social Posts • Blackstone Quarterly Profit Surges on Artificial Intelligence Investments • Eli Lilly Prepares 2027 Approval Request for Next-Generation Weight-Loss Drug • High Inflation Drives Average Date Night to $189, Fueling the Rise of the $7 Coffee Date</description>
+    <pubDate>Thu, 23 Jul 2026 13:30:13 +0000</pubDate>
+    <guid isPermaLink="false">ep-2026-07-23</guid>
+    <enclosure url="https://morning-briefbot.github.io/daily-briefing/episodes/ep-2026-07-23.mp3" length="21992301" type="audio/mpeg"/>
+    <itunes:duration>1832</itunes:duration>
+  </item>
+  <item>
+    <title>Jul 22: Daily Briefing: Oil Hits $95, Big Tech Earnings Kick Off, and Mega AI Chip Deals</title>
+    <description>Oil Prices Spike Toward $95 as Middle East Conflict Escalates • Tech Rally Pauses as Wall Street Awaits Alphabet and Tesla Results • AMD Strikes Multi-Billion Dollar Chip and Investment Deal with Anthropic • OpenAI's Planned Cloud Infrastructure Spending Surges to $750 Billion • Super Micro Computer Surges After Doubling Fourth-Quarter Margin Forecasts • Trump Tariff Threats Prompt Canadian Negotiations and Senate Pushback • Prologis Makes Final $18.7 Billion Takeover Bid for UK Industrial Giant Segro • Nike Cuts Third-Party Online Vendors in Major China Business Reboot • Nvidia Supplier Wistron Opens $700 Million AI Hardware Plant in Texas • Robinhood Redesigns $695 Premium Credit Card Following Customer Pushback • Sony Sparks Controversy Over PlayStation Physical Disc Restrictions</description>
+    <pubDate>Wed, 22 Jul 2026 13:24:24 +0000</pubDate>
+    <guid isPermaLink="false">ep-2026-07-22</guid>
+    <enclosure url="https://morning-briefbot.github.io/daily-briefing/episodes/ep-2026-07-22.mp3" length="21397581" type="audio/mpeg"/>
+    <itunes:duration>1783</itunes:duration>
+  </item>
+  <item>
+    <title>Jul 21: Tariffs Hit Canada, a Blockbuster Tech Rebound, and the Era of the $7 Coffee Date</title>
+    <description>Trump Administration Imposes New 50% Tariffs on Key Canadian Goods • U.S. Strikes Targets in Iran as Mediators Fight for a 10-Day Ceasefire • Chip Stocks Rebound and Lead U.S. Market Futures Higher • General Motors Beats Earnings Expectations and Upgrades Full-Year Forecast • Judge Temporarily Halts Massive $81 Billion Paramount-Warner Merger • Novo Nordisk Sues Eli Lilly Over Allegedly Misleading Weight Loss Ads • Wall Street Landlords Unload Rental Properties as Buying Restrictions Take Effect • BlackRock Leads $12 Billion Financing Deal for New Texas Meta Data Centers • U.S. Tech Executives Sound the Alarm on Rapidly Advancing Chinese AI Models • The 'Designated Scroller' Phenomenon: How Smartphones Are Ruining the Disney Magic • The Rise of the $7 Coffee Date as Average Date Nights Hit $189</description>
+    <pubDate>Tue, 21 Jul 2026 13:21:31 +0000</pubDate>
+    <guid isPermaLink="false">ep-2026-07-21</guid>
+    <enclosure url="https://morning-briefbot.github.io/daily-briefing/episodes/ep-2026-07-21.mp3" length="20086605" type="audio/mpeg"/>
+    <itunes:duration>1673</itunes:duration>
+  </item>
+  <item>
+    <title>Jul 20: Cease-Fire Calm, Polestar's U.S. Exit, and AMD's Helios Launch</title>
+    <description>Oil Prices and Markets Whiplash as U.S.-Iran Escalation Met with Cease-Fire Talks • Andy Burnham Becomes UK Prime Minister, Facing Markets and Trump Criticisms • Polestar to Exit U.S. Market Without Appealing Federal Ban • AMD Enters the AI Rack System Race with Helios, Scoring Microsoft as a Key Buyer • Alphabet Pops on Reports of 'Frozen v2' Silicon to Maximize Gemini Efficiency • Alibaba's New AI Model Claims Second Place Behind Anthropic's Fable 5 • Boeing CEO Warns Financial Stabilization Will Take 'A Couple More Years' • Blackstone-Backed Jersey Mike’s Unveils IPO Terms Targeting $8 Billion Market Cap • UK Warehouse Giant Segro Rejects $18.2 Billion Prologis Acquisition Bid • The 'Designated Scroller': How Disney's Ride-Booking System Is Ruining Family Vacations • Dating Inflation Pushes Average Date Cost to $189, Inspiring the '$7 Coffee Date'</description>
+    <pubDate>Mon, 20 Jul 2026 15:53:00 +0000</pubDate>
+    <guid isPermaLink="false">ep-2026-07-20</guid>
+    <enclosure url="https://morning-briefbot.github.io/daily-briefing/episodes/ep-2026-07-20.mp3" length="7897581" type="audio/mpeg"/>
+    <itunes:duration>658</itunes:duration>
+  </item>
+  <item>
+    <title>Jul 19: The Morning Brew: US Strikes Back, Inflation's New Math, and Stripe's $53B PayPal Power Play</title>
+    <description>U.S. Launches Retaliatory Strikes Following Deadly Iranian Missile Attack in Jordan • Bureau of Economic Analysis to Revamp PCE Inflation Calculation Method • Semiconductor Selloff Deepens as Apple Briefly Reclaims Most Valuable Company Crown From Nvidia • Stripe and Advent International Jointly Propose $53 Billion Takeover of PayPal • SpaceX Negotiating Billions in Data-Center and Computing Deals with the Pentagon • AI Chip Startup Etched in Talks for $20 Billion Valuation Led by Sequoia • Taylor Farms Recalls Iceberg Lettuce in 27 States Following Parasite Outbreak • GLP-1 Drugs and Inflation Squeeze Legacy Food Brands • Costco Experiments with Stand-Alone Gas Stations to Ease Warehouse Congestion • Stagnant German Economy Considers Easing Historic Sunday Shopping Ban • Jensen Huang’s Signature Leather Jacket Fetches $1 Million at Auction</description>
+    <pubDate>Sun, 19 Jul 2026 11:55:03 +0000</pubDate>
+    <guid isPermaLink="false">ep-2026-07-19</guid>
+    <enclosure url="https://morning-briefbot.github.io/daily-briefing/episodes/ep-2026-07-19.mp3" length="24369165" type="audio/mpeg"/>
+    <itunes:duration>2030</itunes:duration>
+  </item>
+  <item>
+    <title>Jul 18: The Daily Brew: Tech Crown Shifts &amp; The $189 Date Night</title>
+    <description>U.S. and Iran Creep Closer to Wider Conflict as Airstrikes and Shipping Disruption Escalate • Semiconductor Stocks Slide Deeper Into Bear Market Territory Following Brutal Selloff • SpaceX Stock Tumbles Below IPO Price After Aborted Starship Test Flight • Netflix Shares Drop as Growth Outlook Disappoints and Viewership Updates Are Scaled Back • Apple and Nvidia Battle for Title of Most Valuable U.S. Company Amid Tech Sector Reset • White House Moves to Restrict Access to Advanced AI Models in National Security Shift • Taco Bell and Taylor Farms Scramble to Contain Parasitic Outbreak Linked to Recalled Lettuce • FAA Grants Boeing Authority to Sign Off on Its Own 737 Max and 787 Airworthiness Certificates • The Cost of a Traditional Date Night Surges to $189, Prompting a Shift to 'Cheap Dates' • Nvidia CEO's Signature Leather Jacket Sells for Nearly $1 Million at Auction</description>
+    <pubDate>Sat, 18 Jul 2026 11:47:09 +0000</pubDate>
+    <guid isPermaLink="false">ep-2026-07-18</guid>
+    <enclosure url="https://morning-briefbot.github.io/daily-briefing/episodes/ep-2026-07-18.mp3" length="25757325" type="audio/mpeg"/>
+    <itunes:duration>2146</itunes:duration>
+  </item>
+  <item>
+    <title>Jul 17: The AI Chip Meltdown, Stripe’s $53B PayPal Bid, and Boomers Upsize Their Homes</title>
+    <description>Tech Stocks Slide as the Trillion-Dollar AI Momentum Trade Cools Down • Stripe and Advent Propose a Blockbuster $53 Billion Acquisition of PayPal • Oil Prices Surge as Escalating U.S.-Iran Clashes Threaten Strait of Hormuz Crude Exports • Uber to Acquire Delivery Hero in a Massive $14.8 Billion Global Consolidation • Netflix Beats Earnings Expectations but Slips on Warned Growth Slowdown • The Boardroom Drama That Triggered a Shocking 25% Plunge for IBM • China's Moonshot AI Unveils Model Set to Directly Challenge Top American Systems • SpaceX Stock Plunges in Premarket After Aborted Starship Test Flight • Eli Lilly Bolsters Psychedelic Medicine Footprint with $2.8 Billion Buyout of AtaiBeckley • Well-Off Baby Boomers Are Bucking Retirement Trends by Buying Bigger Homes • A Capybara on the Loose in the English Countryside Captivates the Public</description>
+    <pubDate>Fri, 17 Jul 2026 12:25:03 +0000</pubDate>
+    <guid isPermaLink="false">ep-2026-07-17</guid>
+    <enclosure url="https://morning-briefbot.github.io/daily-briefing/episodes/ep-2026-07-17.mp3" length="22422285" type="audio/mpeg"/>
+    <itunes:duration>1868</itunes:duration>
+  </item>
+  <item>
+    <title>Jul 16: A $53 Billion Play for PayPal &amp; Oil Rises as Hormuz Tensions Flare</title>
+    <description>U.S.-Iran Tensions Over Strait of Hormuz Flare as Oil Prices Rise • Stripe and Advent International Launch $53 Billion Bid to Buy PayPal • Fed Chair Kevin Warsh Assures Congress of Hard Line on Inflation • Uber Agrees to Acquire Delivery Hero in $14.8 Billion Consolidation Deal • Wall Street Trading Desks Secure Record Revenue on Rising Volatility • TSMC Profits Surge 77% and Chipmaker Commits Additional $100 Billion to U.S. Production • Nvidia Launches New Edge AI Model and Secures Major Infrastructure Deals in Japan • Eli Lilly Expands Into Psychedelic Therapeutics With $2.8 Billion Acquisition of AtaiBeckley • U.S. Retail Sales Moderate in June, Supported by Amazon Prime Day and New Cars • China Regulates AI Companionship to Tackle Declining Birthrates • A Tyrannosaurus Rex Fossil Sells for a Record-Breaking $50 Million</description>
+    <pubDate>Thu, 16 Jul 2026 13:28:57 +0000</pubDate>
+    <guid isPermaLink="false">ep-2026-07-16</guid>
+    <enclosure url="https://morning-briefbot.github.io/daily-briefing/episodes/ep-2026-07-16.mp3" length="27241389" type="audio/mpeg"/>
+    <itunes:duration>2270</itunes:duration>
+  </item>
+  <item>
+    <title>Jul 15: Stripe Eyes PayPal, IBM’s Historic Hit, and a $50 Million Fossil</title>
+    <description>U.S. Restarts Blockade of Iran Ports as Strikes Intensify, Sending Oil Near $80 • PayPal Shares Surge 20% on Reported $53 Billion Takeover Bid by Stripe and Advent • IBM Suffers Historic 25% Stock Drop as Corporate Spending Rotates from Software to AI • Wall Street Banks Mint Record Q2 Profits Fueled by Trading and AI Boom • Warren Buffett Reveals Alphabet Bet and Distances Philanthropy from Bill Gates • China’s Economy Slows to Weakest Growth Pace Since 2022 • ASML Hikes Sales Forecast on Unprecedented Advanced Chip Demand • New York Becomes First State to Temporarily Ban New Large AI Data Centers • States and Writers Sue to Block $53 Billion Paramount-Warner Bros. Discovery Merger • A T-Rex Skeleton Sells for $50 Million, Becoming the Most Expensive Fossil Ever Auctioned • Strangers Unite Online with One Common Goal: To Drink One Million Beers</description>
+    <pubDate>Wed, 15 Jul 2026 12:39:32 +0000</pubDate>
+    <guid isPermaLink="false">ep-2026-07-15</guid>
+    <enclosure url="https://morning-briefbot.github.io/daily-briefing/episodes/ep-2026-07-15.mp3" length="20133261" type="audio/mpeg"/>
+    <itunes:duration>1677</itunes:duration>
+  </item>
+  <item>
+    <title>Jul 14: Slowing Inflation, Big Blue's Big Crash, and the Great Capybara Escapade</title>
+    <description>Oil Prices Surge Past $80 as Trump Reimposes Iran Blockade and Tanker Attacks Escalate • U.S. Inflation Cools Unexpectedly to 3.5% in June as Fed Chair Warsh Pledges Action • Big Banks Post Blockbuster Q2 Results on Surging Volatility and Deal Resurgence • IBM Stock Plunges Over 20% Following Unexpected Profit and Revenue Warning • Twelve States Sue to Block the Multi-Billion Dollar Paramount-Warner Bros. Discovery Merger • Warren Buffett Omits Gates Foundation From Multi-Billion Dollar Annual Berkshire Donations • Frontier Airlines Abandons Wi-Fi Holdout Status with Starlink Partnership • New York State Enacts Temporary Moratorium on Large New Data Centers • Chipotle Crosses the Border with First-Ever Location in Mexico • United Airlines Introduces Upcharge to Guarantee an Empty Middle Seat • An Escaped Capybara on the Lam Is Outsmarting British Authorities</description>
+    <pubDate>Tue, 14 Jul 2026 13:46:41 +0000</pubDate>
+    <guid isPermaLink="false">ep-2026-07-14</guid>
+    <enclosure url="https://morning-briefbot.github.io/daily-briefing/episodes/ep-2026-07-14.mp3" length="20331405" type="audio/mpeg"/>
+    <itunes:duration>1694</itunes:duration>
+  </item>
+  <item>
+    <title>Jul 12: Strait of Hormuz Escalation, Apple Sues OpenAI, and the 99.9% Rejection Rate Company</title>
+    <description>U.S. and Iran Trade Strikes Over Strait of Hormuz Chokepoint • Influential Republican Senator Lindsey Graham Dies at 71 • Apple Sues OpenAI Over Alleged Theft of Trade Secrets • SK Hynix Rallies 13% in Historic Nasdaq Debut • WSJ Survey Shows Geopolitics Leaving the U.S. with Stubborn Inflation • Apollo Global Management Launches $7.6 Billion Takeover Bid for easyJet • Warburg Pincus Closes In on a $7 Billion Specialty Pharmacy Acquisition • Circle Receives Regulatory Nod for First Crypto-Focused National Trust Bank • AI Data Center Surge Faces Mounting Backlash From Farmers • The Ultra-Selective App Company Rejecting 99.9% of Job Applicants • Buc-ee's Mounts Trademark Aggression Against Rival Travel Stops</description>
+    <pubDate>Sun, 12 Jul 2026 14:59:01 +0000</pubDate>
+    <guid isPermaLink="false">ep-2026-07-12</guid>
+    <enclosure url="https://morning-briefbot.github.io/daily-briefing/episodes/ep-2026-07-12.mp3" length="20196909" type="audio/mpeg"/>
+    <itunes:duration>1683</itunes:duration>
+  </item>
+  <item>
+    <title>Jul 11: Apple Sues OpenAI, SK Hynix's Trillion-Dollar Nasdaq Debut, and Buc-ee's Mascot Wars</title>
+    <description>Apple Sues OpenAI for Allegedly Stealing Trade Secrets 'At Every Level' • SK Hynix Surges 13% in Historic Trillion-Dollar Nasdaq Debut • Stablecoin Issuer Circle Wins US Approval for National Trust Bank • Federal Reserve Chair Kevin Warsh Heads to Congress Amid Sticky Inflation and Rate Hike Risks • The White House's Campaign to Save Intel Shows Signs of Progress • Trump Refuses to Sign Landmark Housing Bill, Allowing It to Pass Automatically • Apollo Global Management Launches $7.6 Billion Takeover Bid for easyJet • Vertex Pharmaceuticals to Acquire Crinetics in $10 Billion Cash Deal • The Ultra-Selective Tech Firm Rejecting 99.9% of Job Applicants • Buc-ee’s Unleashes Legal Team to Defend Its Beaver Mascot Against Rivals</description>
+    <pubDate>Sat, 11 Jul 2026 14:53:55 +0000</pubDate>
+    <guid isPermaLink="false">ep-2026-07-11</guid>
+    <enclosure url="https://morning-briefbot.github.io/daily-briefing/episodes/ep-2026-07-11.mp3" length="18282285" type="audio/mpeg"/>
+    <itunes:duration>1523</itunes:duration>
+  </item>
+  <item>
+    <title>Jul 09: Ceasefire Shattered, Oil Spikes, and Costco’s Millionaire Cashiers</title>
+    <description>Oil Prices Jump and Stocks Slide as Trump Declares Iran Ceasefire Over • Federal Reserve Minutes Reveal Deep Division Over Interest Rate Direction • SpaceX Stock Slips Below Debut Price Following Landmark IPO and Nasdaq-100 Debut • UniCredit Nears Control of Commerzbank, Sidestepping German Government Resistance • Levi Strauss Boosts Full-Year Outlook on Direct-to-Consumer Strength • China's Factory Prices Climb to 4-Year High as Consumer Demand Sinks • Blue Origin Seeks $10 Billion in First External Funding Round • Apple Partners with Broadcom in $30 Billion US-Made Chip Supply Agreement • Waymo Expands Driverless Rides to Four New Metropolitan Hubs • How Long-Tenured Costco Cashiers Are Joining the Millionaire Club • Why J.M. Smucker’s $5 Billion Twinkie Acquisition Has Struggled to Deliver</description>
+    <pubDate>Thu, 09 Jul 2026 04:57:57 +0000</pubDate>
+    <guid isPermaLink="false">ep-2026-07-09</guid>
+    <enclosure url="https://morning-briefbot.github.io/daily-briefing/episodes/ep-2026-07-09.mp3" length="18159309" type="audio/mpeg"/>
+    <itunes:duration>1513</itunes:duration>
+  </item>
+</channel>
+</rss>
